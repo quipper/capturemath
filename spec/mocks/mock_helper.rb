@@ -1,4 +1,11 @@
+require 'webmock'
+
 module MockHelper
+  include WebMock::API
+
+  def mock_response(format)
+    stub_request(:post, "http://localhost:5000/#{format}").to_return(body: load_mock(format))
+  end
 
   def load_mock(format)
     File.read(File.join(File.dirname(__FILE__), "math.#{ format }"))

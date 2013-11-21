@@ -6,10 +6,11 @@ describe Capturemath do
   describe 'as_svg' do
 
     it 'should return svg data' do
+      mock_response(:svg)
       Capturemath.as_svg(math).should return_math_as(:svg)
     end
 
-    it 'should raise error on timeout'
+    it 'should raise error on timeout' 
   end
 
   describe 'as_png' do
