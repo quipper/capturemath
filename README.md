@@ -1,6 +1,6 @@
 # Capturemath
 
-TODO: Write a gem description
+A gem that can be used to interact with a mathML to svg/png conversion server (https://github.com/quipper/svgtex). 
 
 ## Installation
 
