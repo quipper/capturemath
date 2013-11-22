@@ -7,17 +7,17 @@ module MockHelper
   end
 
   def mock_response(format)
-    stub_request(:post, "http://localhost:5000/#{ format }").to_return(body: load_mock(format))
+    stub_request(:post, "http://localhost:16000/#{ format }").to_return(body: load_mock(format))
   end
 
   def mock_error(format, error_type)
     case error_type
     when :timeout
-      stub_request(:post, "http://localhost:5000/#{ format }").to_timeout
+      stub_request(:post, "http://localhost:16000/#{ format }").to_timeout
     when :unexpected_node
-      stub_request(:post, "http://localhost:5000/#{ format }").to_return(body: "Unexpected text node")
+      stub_request(:post, "http://localhost:16000/#{ format }").to_return(body: "Unexpected text node")
     when :unknown_node
-      stub_request(:post, "http://localhost:5000/#{ format }").to_return(body: "Unknown node type")
+      stub_request(:post, "http://localhost:16000/#{ format }").to_return(body: "Unknown node type")
     end
   end
 

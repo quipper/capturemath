@@ -4,7 +4,8 @@ require 'httparty'
 require 'base64'
 
 module Capturemath
-  DEFAULT_SERVER = 'http://localhost:5000'
+  # The default location of Svgtex server (https://github.com/quipper/svgtex) set up by foreman. 
+  DEFAULT_SERVER = 'http://localhost:16000' 
 
   Configuration = Struct.new(:server)
   class Error < StandardError; end
