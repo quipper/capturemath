@@ -1,10 +1,13 @@
-require 'webmock'
 
 module MockHelper
   include WebMock::API
 
   def mock_response(format)
-    stub_request(:post, "http://localhost:5000/#{format}").to_return(body: load_mock(format))
+    stub_request(:post, "http://localhost:5000/#{ format }").to_return(body: load_mock(format))
+  end
+
+  def mock_error(format, error_type)
+    stub_request(:post, "http://localhost:5000/#{ format }").to_timeout
   end
 
   def load_mock(format)
