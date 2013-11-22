@@ -29,5 +29,9 @@ module MockHelper
     failure_message_for_should do 
       "Expected #{format} output to be: \n\t\t#{ load_mock(format) } \nbut was: \n\t\t#{ @actual }"
     end
+
+    failure_message_for_should_not do 
+      "Expected #{format} output to NOT be: \n\t\t#{ load_mock(format) }"
+    end
   end
 end

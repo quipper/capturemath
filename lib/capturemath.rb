@@ -12,6 +12,12 @@ module Capturemath
     end
   end  
 
+  def self.as_png(math)
+    HTTParty.post('http://localhost:5000/png', body: math).to_s.tap do |response|
+      check_for_errors(response)
+    end
+  end
+
   private 
 
     def self.check_for_errors(response)

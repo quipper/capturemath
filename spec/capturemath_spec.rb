@@ -28,7 +28,10 @@ describe Capturemath do
 
   describe 'as_png' do
 
-    it 'should return png data'
+    it 'should return not return base64 png data that is' do
+      mock_response(:png)
+      Capturemath.as_png(math).should return_math_as(:png)
+    end
 
     it 'should raise error on timeout' 
   end
