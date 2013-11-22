@@ -33,7 +33,20 @@ describe Capturemath do
       Capturemath.as_png(math).should return_math_as(:png)
     end
 
-    it 'should raise error on timeout' 
+    it 'should raise error on timeout' do
+      mock_error(:png, :timeout)
+      lambda { Capturemath.as_png(math) }.should raise_error(Timeout::Error)
+    end
+
+    it 'should raise error on unexpected node errors' do
+      mock_error(:png, :unexpected_node)
+      lambda { Capturemath.as_png(math) }.should raise_error(Capturemath::Error)
+    end
+
+    it 'should raise error on unknown node errors' do
+      mock_error(:png, :unknown_node)
+      lambda { Capturemath.as_png(math) }.should raise_error(Capturemath::Error)
+    end
   end
 
 end
