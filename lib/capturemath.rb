@@ -4,6 +4,7 @@ require 'httparty'
 require 'base64'
 
 module Capturemath
+  DEFAULT_SERVER = 'http://localhost:5000'
 
   Configuration = Struct.new(:server)
   class Error < StandardError; end
@@ -18,7 +19,11 @@ module Capturemath
     end
 
     def config
-      @config ||= Configuration.new('http://localhost:5000')
+      @config ||= Configuration.new(DEFAULT_SERVER)
+    end
+
+    def configure
+      yield(config)
     end
 
     private 

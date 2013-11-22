@@ -38,7 +38,15 @@ describe Capturemath do
     let(:config) { Capturemath.config }
 
     it 'should have default server' do
-      config.server.should == 'http://localhost:5000'
+      config.server.should == Capturemath::DEFAULT_SERVER
+    end
+  end
+
+  describe 'configure' do
+    let(:new_server_location) { 'http://localhost:16000' }
+    
+    it 'should allow reconfiguring the server' do
+      Capturemath.configure { |config|  config.server = new_server_location}
     end
   end
 
