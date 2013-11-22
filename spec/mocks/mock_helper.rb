@@ -2,6 +2,10 @@
 module MockHelper
   include WebMock::API
 
+  def quadratic_roots
+    '<math display="block"><mrow><mi>x</mi><mo>=</mo><mfrac><mrow><mo>−</mo><mi>b</mi><mo>±</mo><msqrt><mrow><msup><mi>b</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>a</mi><mi>c</mi></mrow></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></mrow></math>'
+  end
+
   def mock_response(format)
     stub_request(:post, "http://localhost:5000/#{ format }").to_return(body: load_mock(format))
   end

@@ -1,6 +1,7 @@
 require "capturemath/version"
 
 require 'httparty'
+require 'base64'
 
 module Capturemath
   
@@ -12,7 +13,7 @@ module Capturemath
     end  
 
     def as_png(math)
-      convert(math, :png)
+      Base64.decode64(convert(math, :png))
     end
 
     private 
