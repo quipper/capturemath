@@ -4,49 +4,27 @@ describe Capturemath do
   let(:math) { '<math></math>' }
 
   describe 'as_svg' do
+    let(:format) { :svg }
+    let(:perform_capture) { Capturemath.as_svg(math) }
 
     it 'should return svg data' do
-      mock_response(:svg)
-      Capturemath.as_svg(math).should return_math_as(:svg)
+      mock_response(format)
+      perform_capture.should return_math_as(format)
     end
 
-    it 'should raise error on timeout' do
-      mock_error(:svg, :timeout)
-      lambda { Capturemath.as_svg(math) }.should raise_error(Timeout::Error)
-    end
-
-    it 'should raise error on unexpected node errors' do
-      mock_error(:svg, :unexpected_node)
-      lambda { Capturemath.as_svg(math) }.should raise_error(Capturemath::Error)
-    end
-
-    it 'should raise error on unknown node errors' do
-      mock_error(:svg, :unknown_node)
-      lambda { Capturemath.as_svg(math) }.should raise_error(Capturemath::Error)
-    end
+    it_should_behave_like 'it handles server errors'
   end
 
   describe 'as_png' do
+    let(:format) { :png }
+    let(:perform_capture) { Capturemath.as_png(math) }
 
     it 'should return not return base64 png data that is' do
-      mock_response(:png)
-      Capturemath.as_png(math).should return_math_as(:png)
+      mock_response(format)
+      perform_capture.should return_math_as(format)
     end
 
-    it 'should raise error on timeout' do
-      mock_error(:png, :timeout)
-      lambda { Capturemath.as_png(math) }.should raise_error(Timeout::Error)
-    end
-
-    it 'should raise error on unexpected node errors' do
-      mock_error(:png, :unexpected_node)
-      lambda { Capturemath.as_png(math) }.should raise_error(Capturemath::Error)
-    end
-
-    it 'should raise error on unknown node errors' do
-      mock_error(:png, :unknown_node)
-      lambda { Capturemath.as_png(math) }.should raise_error(Capturemath::Error)
-    end
+    it_should_behave_like 'it handles server errors'
   end
 
 end
