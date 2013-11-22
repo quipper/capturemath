@@ -7,17 +7,17 @@ module MockHelper
   end
 
   def mock_response(format)
-    stub_request(:post, "http://localhost:16000/#{ format }").to_return(body: load_mock(format))
+    stubbed_request(format).to_return(body: load_mock(format))
   end
 
   def mock_error(format, error_type)
     case error_type
     when :timeout
-      stub_request(:post, "http://localhost:16000/#{ format }").to_timeout
+      stubbed_request(format).to_timeout
     when :unexpected_node
-      stub_request(:post, "http://localhost:16000/#{ format }").to_return(body: "Unexpected text node")
+      stubbed_request(format).to_return(body: "Unexpected text node")
     when :unknown_node
-      stub_request(:post, "http://localhost:16000/#{ format }").to_return(body: "Unknown node type")
+      stubbed_request(format).to_return(body: "Unknown node type")
     end
   end
 
@@ -38,4 +38,10 @@ module MockHelper
       "Expected #{format} output to NOT be: \n\t\t#{ load_mock(format) }"
     end
   end
+
+  private 
+
+    def stubbed_request(format)
+      stub_request(:post, "#{ Capturemath.config.server }/#{ format }")
+    end
 end
