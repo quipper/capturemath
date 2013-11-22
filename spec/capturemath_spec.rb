@@ -14,6 +14,16 @@ describe Capturemath do
       mock_error(:svg, :timeout)
       lambda { Capturemath.as_svg(math) }.should raise_error(Timeout::Error)
     end
+
+    it 'should raise error on unexpected node errors' do
+      mock_error(:svg, :unexpected_node)
+      lambda { Capturemath.as_svg(math) }.should raise_error(Capturemath::Error)
+    end
+
+    it 'should raise error on unknown node errors' do
+      mock_error(:svg, :unknown_node)
+      lambda { Capturemath.as_svg(math) }.should raise_error(Capturemath::Error)
+    end
   end
 
   describe 'as_png' do
