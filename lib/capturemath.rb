@@ -4,7 +4,8 @@ require 'httparty'
 require 'base64'
 
 module Capturemath
-  
+
+  Configuration = Struct.new(:server)
   class Error < StandardError; end
 
   class << self
@@ -16,9 +17,13 @@ module Capturemath
       Base64.decode64(convert(math, :png))
     end
 
+    def config
+      @config ||= Configuration.new('http://localhost:5000')
+    end
+
     private 
       def convert(math, format)
-        HTTParty.post("http://localhost:5000/#{ format }", body: math).to_s.tap do |response|
+        HTTParty.post("#{ config.server }/#{ format }", body: math).to_s.tap do |response|
           check_for_errors(response)
         end
       end 

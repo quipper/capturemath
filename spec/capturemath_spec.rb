@@ -34,4 +34,12 @@ describe Capturemath do
     it_should_behave_like 'it handles server errors'
   end
 
+  describe 'config' do
+    let(:config) { Capturemath.config }
+
+    it 'should have default server' do
+      config.server.should == 'http://localhost:5000'
+    end
+  end
+
 end
