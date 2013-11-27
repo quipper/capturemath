@@ -56,7 +56,7 @@ module Capturemath
       end
 
       def string_as_tempfile(string, type)
-        Tempfile.new(["#{ Time.now }#{ rand(20) }", type]).tap do |file|
+        Tempfile.new(["math", type]).tap do |file|
           file.puts string
           file.rewind
         end
