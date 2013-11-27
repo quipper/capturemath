@@ -45,6 +45,22 @@ describe Capturemath do
       Base64.strict_encode64(png.read).should include(Base64.strict_encode64(Capturemath.as_png(math)))
     end
 
+    it 'should allow manipulating the file within a block' do
+      file_path = nil
+      Capturemath.as_png_tempfile(math) do |png_file|
+        file_path = png_file
+      end
+      file_path.should_not be_nil
+    end
+
+    it 'should unlink file when manipulating inside block' do
+      file = nil
+      Capturemath.as_png_tempfile(math) do |png_file|
+        file = png_file
+        file.path.should_not be_nil
+      end
+      file.path.should be_nil
+    end
   end
 
   describe 'config' do
