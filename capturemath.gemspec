@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Capturemath::VERSION
   spec.authors       = ["Ashish Sehra"]
   spec.email         = ["asehra@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{A gem that can be used to interact with a mathML to svg/png conversion server (https://github.com/quipper/svgtex). }
+  spec.summary       = %q{A gem that can be used to interact with a mathML to svg/png conversion server (https://github.com/quipper/svgtex). }
   spec.homepage      = ""
   spec.license       = "MIT"
 
