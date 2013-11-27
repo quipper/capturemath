@@ -14,6 +14,8 @@ module MockHelper
     case error_type
     when :timeout
       stubbed_request(format).to_timeout
+    when :connection_refused
+      stubbed_request(format).to_raise(Errno::ECONNREFUSED.new("Connection refused - connect(2)"))
     when :unexpected_node
       stubbed_request(format).to_return(body: "Unexpected text node")
     when :unknown_node
