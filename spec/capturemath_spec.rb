@@ -34,6 +34,19 @@ describe Capturemath do
     it_should_behave_like 'it handles server errors'
   end
 
+  describe 'as_png_tempfile' do
+
+    before do
+      mock_response(:png)
+    end
+
+    it 'should return a png tempfile' do
+      png = Capturemath.as_png_tempfile(math)
+      Base64.strict_encode64(png.read).should include(Base64.strict_encode64(Capturemath.as_png(math)))
+    end
+
+  end
+
   describe 'config' do
     let(:config) { Capturemath.config }
 
