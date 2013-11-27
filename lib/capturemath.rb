@@ -22,9 +22,19 @@ module Capturemath
 
     def as_png_tempfile(math)
       png_string = as_png(math)
-      Tempfile.new(["Math#{Time.now}", '.png']).tap do |file|
+      png_file = Tempfile.new(["Math#{Time.now}", '.png']).tap do |file|
         file.puts png_string
         file.rewind
+      end
+      if block_given?
+        begin
+          yield(png_file)
+        ensure
+          png_file.close
+          png_file.unlink
+        end
+      else
+        png_file
       end
     end
 
