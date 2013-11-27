@@ -21,11 +21,7 @@ module Capturemath
     end
 
     def as_png_tempfile(math)
-      png_string = as_png(math)
-      png_file = Tempfile.new(["Math#{Time.now}", '.png']).tap do |file|
-        file.puts png_string
-        file.rewind
-      end
+      png_file = string_as_tempfile(as_png(math), '.png')
       if block_given?
         begin
           yield(png_file)
@@ -56,6 +52,13 @@ module Capturemath
       def check_for_errors(response)
         if response.match /^[Unknown node type|Unexpected.*node]/
           raise Error.new(response)
+        end
+      end
+
+      def string_as_tempfile(string, type)
+        Tempfile.new(["#{ Time.now }#{ rand(20) }", type]).tap do |file|
+          file.puts string
+          file.rewind
         end
       end
   end
