@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'spec_helper'
 
 describe Capturemath do
@@ -51,6 +52,10 @@ describe Capturemath do
         file_path = png_file
       end
       file_path.should_not be_nil
+
+      expect {
+        File.read(file_path)
+      }.to_not raise_error
     end
 
     it 'should unlink file when manipulating inside block' do
