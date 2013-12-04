@@ -20,18 +20,12 @@ module Capturemath
       Base64.decode64(convert(math, :png))
     end
 
-    def as_png_tempfile(math)
+    def as_png_file(math, &blk)
       png_file = string_as_tempfile(as_png(math), '.png')
-      if block_given?
-        begin
-          yield(png_file)
-        ensure
-          png_file.close
-          png_file.unlink
-        end
-      else
-        png_file
-      end
+      yield(png_file)
+    ensure
+      png_file.close
+      png_file.unlink
     end
 
     def config
