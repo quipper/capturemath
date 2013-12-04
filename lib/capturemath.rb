@@ -1,4 +1,3 @@
-# encoding: utf-8
 require "capturemath/version"
 
 require 'httparty'
@@ -25,8 +24,10 @@ module Capturemath
       png_file = string_as_tempfile(as_png(math), '.png')
       yield(png_file)
     ensure
-      png_file.close
-      png_file.unlink
+      if png_file
+        png_file.close
+        png_file.unlink
+      end
     end
 
     def config
@@ -53,7 +54,7 @@ module Capturemath
       end
 
       def string_as_tempfile(string, type)
-        Tempfile.new(["math", type]).tap do |file|
+        Tempfile.new(["math", type], :encoding => 'ascii-8bit').tap do |file|
           file.puts string
           file.rewind
         end
