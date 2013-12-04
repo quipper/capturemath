@@ -1,3 +1,4 @@
+# encoding: utf-8
 require "capturemath/version"
 
 require 'httparty'
