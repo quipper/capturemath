@@ -43,8 +43,8 @@ module Capturemath
         HTTParty.post("#{ config.server }/#{ format }", body: math).to_s.tap do |response|
           check_for_errors(response)
         end
-      rescue Errno::ECONNREFUSED 
-        raise Error.new('Capturemath error: Connection refused. Svgtex server may not be reachable.')
+      rescue Errno::ECONNREFUSED => e
+        raise e, 'Capturemath error: Connection refused. Svgtex server may not be reachable.'
       end 
 
       def check_for_errors(response)
