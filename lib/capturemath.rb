@@ -2,6 +2,7 @@ require "capturemath/version"
 
 require 'httparty'
 require 'base64'
+require 'tempfile'
 
 module Capturemath
   # The default location of Svgtex server (https://github.com/quipper/svgtex) set up by foreman. 
@@ -17,6 +18,14 @@ module Capturemath
 
     def as_png(math)
       Base64.decode64(convert(math, :png))
+    end
+
+    def as_png_file(math, &blk)
+      png_file = string_as_tempfile(as_png(math), '.png')
+      yield(png_file)
+    ensure
+      png_file.close
+      png_file.unlink
     end
 
     def config
@@ -37,6 +46,13 @@ module Capturemath
       def check_for_errors(response)
         if response.match /^[Unknown node type|Unexpected.*node]/
           raise Error.new(response)
+        end
+      end
+
+      def string_as_tempfile(string, type)
+        Tempfile.new(["math", type]).tap do |file|
+          file.puts string
+          file.rewind
         end
       end
   end

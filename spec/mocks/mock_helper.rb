@@ -28,7 +28,7 @@ module MockHelper
 
   RSpec::Matchers.define :return_math_as do |format|
     match do |actual|
-      actual.should eq(load_mock(format))
+      actual.include?(load_mock(format))
     end
 
     failure_message_for_should do 
