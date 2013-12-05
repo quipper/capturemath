@@ -24,8 +24,10 @@ module Capturemath
       png_file = string_as_tempfile(as_png(math), '.png')
       yield(png_file)
     ensure
-      png_file.close
-      png_file.unlink
+      if png_file
+        png_file.close
+        png_file.unlink
+      end
     end
 
     def config
@@ -41,16 +43,18 @@ module Capturemath
         HTTParty.post("#{ config.server }/#{ format }", body: math).to_s.tap do |response|
           check_for_errors(response)
         end
+      rescue Errno::ECONNREFUSED => e
+        raise e, 'Capturemath error: Connection refused. Svgtex server may not be reachable.'
       end 
 
       def check_for_errors(response)
         if response.match /^[Unknown node type|Unexpected.*node]/
-          raise Error.new(response)
+          raise Error.new("Capturemath error: #{response}")
         end
       end
 
       def string_as_tempfile(string, type)
-        Tempfile.new(["math", type]).tap do |file|
+        Tempfile.new(["math", type], :encoding => 'ascii-8bit').tap do |file|
           file.puts string
           file.rewind
         end

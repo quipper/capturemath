@@ -13,4 +13,9 @@ shared_examples_for "it handles server errors" do
     mock_error(format, :unknown_node)
     lambda { perform_capture }.should raise_error(Capturemath::Error)
   end
+
+  it 'should raise error when server is not reachable' do
+    mock_error(format, :connection_refused) 
+    lambda { perform_capture }.should raise_error(Errno::ECONNREFUSED)
+  end
 end
