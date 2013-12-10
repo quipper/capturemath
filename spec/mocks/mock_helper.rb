@@ -21,6 +21,8 @@ module MockHelper
       stubbed_request(format).to_return(body: "Unexpected text node")
     when :unknown_node
       stubbed_request(format).to_return(body: "Unknown node type")
+    when :no_math
+      stubbed_request(format).to_return(body: "e")
     end
   end
 

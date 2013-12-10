@@ -41,15 +41,17 @@ module Capturemath
     private 
       def convert(math, format)
         HTTParty.post("#{ config.server }/#{ format }", body: math).to_s.tap do |response|
-          check_for_errors(response)
+          check_for_errors(math, response)
         end
       rescue Errno::ECONNREFUSED => e
         raise e, 'Capturemath error: Connection refused. Svgtex server may not be reachable.'
       end 
 
-      def check_for_errors(response)
-        if response.match /^[Unknown node type|Unexpected.*node]/
+      def check_for_errors(math, response)
+        if response.match /^(Unknown node type|Unexpected.*node)/
           raise Error.new("Capturemath error: #{response}")
+        elsif response.match /^e$/ 
+          raise Error.new("Capturemath error: Invalid MathML: #{ math }")
         end
       end
 
