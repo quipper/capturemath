@@ -1,4 +1,5 @@
 require "capturemath/version"
+require "capturemath/mathml"
 
 require 'httparty'
 require 'base64'
@@ -40,7 +41,7 @@ module Capturemath
 
     private 
       def convert(math, format)
-        HTTParty.post("#{ config.server }/#{ format }", body: math).to_s.tap do |response|
+        HTTParty.post("#{ config.server }/#{ format }", body: MathML.format(math)).to_s.tap do |response|
           check_for_errors(math, response)
         end
       rescue Errno::ECONNREFUSED => e
