@@ -46,5 +46,11 @@ describe subject do
         subject.format 'leading <math><mi>a</mi></math> separating <math><mi>a</mi></math> trailing'
         ).to eq('<math><mtext>leading&#x00A0;</mtext><mi>a</mi><mtext>&#x00A0;separating&#x00A0;</mtext><mi>a</mi><mtext>&#x00A0;trailing</mtext></math>')
     end
+
+    it 'works for japanese characters' do
+      expect(
+        subject.format "次の式をみたす自然数<math> <mi>a</mi></math>の値の個数を求めなさい"
+        ).to eq("<math><mtext>次の式をみたす自然数</mtext>&#x00A0;<mi>a</mi><mtext>の値の個数を求めなさい</mtext></math>")
+    end
   end
 end
