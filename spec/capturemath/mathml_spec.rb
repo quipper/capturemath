@@ -26,23 +26,19 @@ describe subject do
       expect(subject.format 'text without math').to eq('<math><mtext>text&#x00A0;without&#x00A0;math</mtext></math>')
     end
 
-    it 'returns math only string in an array' do
-      expect(subject.format '<math></math>').to eq('<math></math>')
-    end
-
-    it 'returns leading text as different token from math' do
+    it 'returns leading text wrapped in mtext followed by math specific tags' do
       expect(
         subject.format 'leading text<math><mi>a</mi></math>'
         ).to eq('<math><mtext>leading&#x00A0;text</mtext><mi>a</mi></math>')
     end
 
-    it 'returns trailing text as different token' do
+    it 'returns trailing text within mtext' do
       expect(
         subject.format 'leading text<math><mi>a</mi></math> trailing'
         ).to eq('<math><mtext>leading&#x00A0;text</mtext><mi>a</mi><mtext>&#x00A0;trailing</mtext></math>')
     end
 
-    it 'recursively partitions into tokens' do
+    it 'works for multiple embedded math sequences' do
       expect(
         subject.format 'leading <math><mi>a</mi></math> separating <math><mi>a</mi></math> trailing'
         ).to eq('<math><mtext>leading&#x00A0;</mtext><mi>a</mi><mtext>&#x00A0;separating&#x00A0;</mtext><mi>a</mi><mtext>&#x00A0;trailing</mtext></math>')
