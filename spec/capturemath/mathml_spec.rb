@@ -14,6 +14,12 @@ describe subject do
       expect(subject.format '<math></math>').to eq('<math></math>')
     end
 
+    it 'removes unwanted attributes from mathml root node' do
+      expect(
+        subject.format '<math display="block"></math>'
+        ).to eq('<math></math>')
+    end
+
     it 'wraps math-less string in math and mtext tags' do
       expect(subject.format 'text without math').to eq('<math><mtext>text without math</mtext></math>')
     end
