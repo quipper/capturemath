@@ -62,6 +62,34 @@ describe Capturemath do
     end
   end
 
+  describe '.as_svg_file' do
+
+    before do
+      mock_response(:svg)
+    end
+
+    it 'requires a block' do
+      expect { Capturemath.as_svg_file(math) }.to raise_error(LocalJumpError)
+    end
+
+    it 'allows access to a file within a block' do
+      svg_contents = nil
+      Capturemath.as_svg_file(math) do |svg_file|
+        svg_contents = svg_file.read
+      end
+      expect(svg_contents).to return_math_as(:svg)
+    end
+
+    it 'unlinks a file once done with the block' do
+      file = nil
+      Capturemath.as_svg_file(math) do |svg_file|
+        file = svg_file
+        expect(file.path).to_not be_nil
+      end
+      expect(file.path).to be_nil
+    end
+  end
+
   describe '.config' do
     let(:config) { Capturemath.config }
 
@@ -72,7 +100,7 @@ describe Capturemath do
 
   describe '.configure' do
     let(:new_server_location) { 'http://localhost:16000' }
-    
+
     it 'allows reconfiguring the server' do
       Capturemath.configure { |config|  config.server = new_server_location}
       expect(Capturemath.config.server).to eq(new_server_location)

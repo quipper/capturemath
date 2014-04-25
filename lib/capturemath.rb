@@ -6,8 +6,8 @@ require 'base64'
 require 'tempfile'
 
 module Capturemath
-  # The default location of Svgtex server (https://github.com/quipper/svgtex) set up by foreman. 
-  DEFAULT_SERVER = 'http://localhost:16000' 
+  # The default location of Svgtex server (https://github.com/quipper/svgtex) set up by foreman.
+  DEFAULT_SERVER = 'http://localhost:16000'
 
   Configuration = Struct.new(:server)
   class Error < StandardError; end
@@ -15,7 +15,7 @@ module Capturemath
   class << self
     def as_svg(math)
       convert(math, :svg)
-    end  
+    end
 
     def as_png(math)
       Base64.decode64(convert(math, :png))
@@ -31,6 +31,16 @@ module Capturemath
       end
     end
 
+    def as_svg_file(math, &blk)
+      svg_file = string_as_tempfile(as_svg(math), '.svg')
+      yield(svg_file)
+    ensure
+      if svg_file
+        svg_file.close
+        svg_file.unlink
+      end
+    end
+
     def config
       @config ||= Configuration.new(DEFAULT_SERVER)
     end
@@ -39,19 +49,19 @@ module Capturemath
       yield(config)
     end
 
-    private 
+    private
       def convert(math, format)
         HTTParty.post("#{ config.server }/#{ format }", body: MathML.format(math)).to_s.tap do |response|
           check_for_errors(math, response)
         end
       rescue Errno::ECONNREFUSED => e
         raise e, 'Capturemath error: Connection refused. Svgtex server may not be reachable.'
-      end 
+      end
 
       def check_for_errors(math, response)
         if response.match /^(Unknown node type|Unexpected.*node)/
           raise Error.new("Capturemath error: #{response}")
-        elsif response.match /^e$/ 
+        elsif response.match /^e$/
           raise Error.new("Capturemath error: Invalid MathML: #{ math }")
         end
       end
